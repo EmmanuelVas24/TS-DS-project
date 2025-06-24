@@ -1,5 +1,5 @@
 import {repository} from '@loopback/repository';
-import {post, get, param, getModelSchemaRef, requestBody, put, del} from '@loopback/rest';
+import {post, get, param, getModelSchemaRef, requestBody, put, del, patch} from '@loopback/rest';
 import {Comment} from '../models/comment.model';
 import {CommentRepository} from '../repositories/comment.repository';
 import * as fs from 'fs';
@@ -64,6 +64,14 @@ export class CommentController {
   async updateById(
     @param.path.string('id') id: string,
     @requestBody() comment: Comment,
+  ): Promise<void> {
+    await this.commentRepository.updateById(id, comment);
+  }
+
+  @patch('/comments/{id}')
+  async patchById(
+    @param.path.string('id') id: string,
+    @requestBody() comment: Partial<Comment>,
   ): Promise<void> {
     await this.commentRepository.updateById(id, comment);
   }
