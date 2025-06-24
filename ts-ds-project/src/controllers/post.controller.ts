@@ -1,5 +1,5 @@
 import {repository} from '@loopback/repository';
-import {post, param, get, getModelSchemaRef, requestBody, put, del} from '@loopback/rest';
+import {post, param, get, getModelSchemaRef, requestBody, put, del, patch} from '@loopback/rest';
 import {Post} from '../models/post.model';
 import {PostRepository} from '../repositories/post.repository';
 import * as fs from 'fs';
@@ -50,6 +50,14 @@ export class PostController {
     @param.path.string('id') id: string,
   ): Promise<void> {
     await this.postRepository.deleteById(id);
+  }
+
+  @patch('/posts/{id}')
+  async patchById(
+    @param.path.string('id') id: string,
+    @requestBody() post: Partial<Post>,
+  ): Promise<void> {
+    await this.postRepository.updateById(id, post);
   }
 
   @post('/posts/import-posts')
